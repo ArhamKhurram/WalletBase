@@ -1,0 +1,25 @@
+#dashboard {
+    layout: grid;
+    grid-size: 1 2;
+    grid-rows: 2fr 1fr;
+}
+
+#main {
+    layout: grid;
+    grid-size: 2;
+    grid-columns: 1fr 2fr;
+    background: yellowgreen;
+}
+
+#status {
+    background: darkcyan;
+}
+
+#tasks {
+    background: darkgoldenrod;
+    column-span: 2;
+}
+
+#wallets { 
+    background: darkmagenta;
+}
