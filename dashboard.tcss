@@ -8,18 +8,17 @@
     layout: grid;
     grid-size: 2;
     grid-columns: 1fr 2fr;
-    background: yellowgreen;
-}
-
-#status {
-    background: darkcyan;
 }
 
 #tasks {
-    background: darkgoldenrod;
+    border: heavy darkred;
+}
+
+#status {
     column-span: 2;
+    border: heavy darkred;
 }
 
 #wallets { 
-    background: darkmagenta;
+    border: heavy darkred;
 }

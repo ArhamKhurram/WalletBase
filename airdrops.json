@@ -1,0 +1,85 @@
+{
+    "airdrops": {
+        "1": {
+            "name": "Jupiter",
+            "address": "0x1234",
+            "amount": 1000,
+            "status": "Farming",
+            "type": "ERC20",
+            "tasks": ["tasks1", "tasks2", "tasks3"],
+            "taskStatus": [1, 0, 1]
+        },
+        "2": {
+            "name": "Taiko",
+            "address": "0x1234",
+            "amount": 1000,
+            "status": "Farming",
+            "type": "ERC20",
+            "tasks": ["tasks1", "tasks2", "tasks3"],
+            "taskStatus": [1, 0, 1]
+        },
+        "3": {
+            "name": "Nitrogen",
+            "address": "0x1234",
+            "amount": 1000,
+            "status": "Farming",
+            "type": "ERC20",
+            "tasks": ["tasks1", "tasks2", "tasks3"],
+            "taskStatus": [1, 0, 1]
+        },
+        "4": {
+            "name": "Nitrogen",
+            "address": "0x1234",
+            "amount": 1000,
+            "status": "Farming",
+            "type": "ERC20",
+            "tasks": ["tasks1", "tasks2", "tasks3"],
+            "taskStatus": [1, 0, 1]
+        },
+        "5": {
+            "name": "Nitrogen",
+            "address": "0x1234",
+            "amount": 1000,
+            "status": "Farming",
+            "type": "ERC20",
+            "tasks": ["tasks1", "tasks2", "tasks3"],
+            "taskStatus": [1, 0, 1]
+        },
+        "6": {
+            "name": "Nitrogen",
+            "address": "0x1234",
+            "amount": 1000,
+            "status": "Farming",
+            "type": "ERC20",
+            "tasks": ["tasks1", "tasks2", "tasks3"],
+            "taskStatus": [1, 0, 1]
+        },
+        "7": {
+            "name": "Nitrogen",
+            "address": "0x1234",
+            "amount": 1000,
+            "status": "Farming",
+            "type": "ERC20",
+            "tasks": ["tasks1", "tasks2", "tasks3"],
+            "taskStatus": [1, 0, 1]
+        },
+        "8": {
+            "name": "Nitrogen",
+            "address": "0x1234",
+            "amount": 1000,
+            "status": "Farming",
+            "type": "ERC20",
+            "tasks": ["tasks1", "tasks2", "tasks3"],
+            "taskStatus": [1, 0, 1]
+        },
+        "9": {
+            "name": "Nitrogen",
+            "address": "0x1234",
+            "amount": 1000,
+            "status": "Farming",
+            "type": "ERC20",
+            "tasks": ["tasks1", "tasks2", "tasks3"],
+            "taskStatus": [1, 0, 1]
+        }
+    }
+}
