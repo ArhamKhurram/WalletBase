@@ -3,6 +3,7 @@ from textual.screen import Screen
 from textual.containers import Container, Horizontal, VerticalScroll, Vertical
 from textual.widgets import Static, Header, Footer, Placeholder, Tabs, Button
 from textual.widgets import Label, TabbedContent, TabPane, DataTable
+from rich.text import Text
 
 import json
 import pandas
@@ -17,8 +18,9 @@ with open('airdrops.json', 'r') as f:
 
 df = pandas.read_csv("walletDB.csv")
 
-columns = ["Name", "Address", "Private Key", "Chain"]
+columns = len(df.columns)
 rows = len(df.index)
+
 
 # Dashboard Screen
 
@@ -56,18 +58,28 @@ class DashboardScreen(Screen):
                 def _test_dt( self ) -> DataTable:
                     dt = DataTable()
                     dt.zebra_stripes = True
-                    dt.cursor_type   = "row"
+                    dt.cursor_type   = "cell"
                     dt.fixed_columns = 1
                     dt.add_column( "Index")
                     dt.add_column( "Name")
                     dt.add_column( "Address")
                     dt.add_column( "Private Key")
                     dt.add_column( "Chain")
-                    for n in range( rows ):
-                        dt.add_row(n, f"{df['wallet_name'][n]}", f"{df['address'][n]}", f"{df['privatekey'][n]}", f"{df['network'][n]}")
                     
+                    # Add rows and apply styling to each cell
+                    for n in range(rows):
+                        dt.add_row(
+                            Text(str(n+1), style="italic black"),
+                            Text(str(df['wallet_name'][n]), style="italic #03AC13"),
+                            Text(str(df['address'][n]), style="italic #03AC13"),
+                            Text(str(df['privatekey'][n]), style="italic #03AC13"),
+                            Text(str(df['network'][n]), style="italic #03AC13")
+                        )  
+                                               
                     return dt
+
                 yield _test_dt(self)
+                
                     
         yield Footer()
 
