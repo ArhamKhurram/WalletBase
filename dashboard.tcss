@@ -41,3 +41,12 @@
     border: solid green;
 }
 
+#Sorting {
+    border: darkred;
+}
+
+#tasklabel {
+    border: darkred;
+    text-align: center;
+
+}

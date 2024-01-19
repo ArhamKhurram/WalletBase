@@ -2,7 +2,7 @@ from textual.app import App, ComposeResult
 from textual.screen import Screen
 from textual.containers import Container, Horizontal, VerticalScroll, Vertical
 from textual.widgets import Static, Header, Footer, Placeholder, Tabs, Button
-from textual.widgets import Label, TabbedContent, TabPane, DataTable, Collapsible
+from textual.widgets import Label, TabbedContent, TabPane, DataTable, Collapsible, Tabs
 from textual.widgets import OptionList, SelectionList
 from rich.text import Text
 
@@ -11,7 +11,7 @@ import pandas
 from datetime import datetime
 
 # Load from JSON
-with open('airdrops.json', 'r') as f:
+with open('airdrops_info.json', 'r') as f:
     airdrops_loaded = json.load(f)
     
     
@@ -30,6 +30,7 @@ selection_list = SelectionList[int](
     ("Ordinals", 2),
     ("Nitrogen", 3),
     ("Teiko", 4),
+    ("Berachain", 5),
     classes="option"
 )
 
@@ -37,7 +38,7 @@ selection_list = SelectionList[int](
 # Load DataTable For Wallets 
 
 def _test_dt( self ) -> DataTable:
-                    dt = DataTable()
+                    dt = DataTable(id="database")
                     dt.zebra_stripes = True
                     dt.cursor_type   = "cell"
                     dt.fixed_columns = 1
@@ -74,9 +75,13 @@ class DashboardScreen(Screen):
             with Horizontal(id="main"):
                 
                 with VerticalScroll(id="tasks"):  
-                    yield Static("Status")
-                    for i in range(50):
-                        yield Button(f"Airdrop {i}: Farming")
+                    yield Static("Tasks", id="taskslabel")
+                    with Collapsible(title="Tasks"):
+                        yield Static("test")
+                        # for key,airdrop in airdrops_loaded['airdrops'].items():
+                        #     pane = TabbedContent.get_tab()
+                        #     if pane == f"{airdrop}":
+                        #         yield Static(f"{airdrop['tasks']}")
                         
                 with Container(id="status"):
                     with TabbedContent(id="tabbed"):
@@ -103,8 +108,9 @@ class WalletsScreen(Screen):
         with Vertical(id="WalletScreen"):
             with Horizontal(id="Taskbar"):
                 yield Label("Total Wallets", classes="test")
-                with Collapsible(title="Sort By Chain"):
-                    yield selection_list
+                with VerticalScroll(id="Sorting"):
+                    with Collapsible(title="Sort By Chain"):
+                        yield selection_list
             yield _test_dt(self)
         
         
