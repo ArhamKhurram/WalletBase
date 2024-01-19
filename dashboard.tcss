@@ -22,3 +22,22 @@
 #wallets { 
     border: heavy darkred;
 }
+
+#WalletScreen {
+    layers: below above;
+    layout: grid;
+    grid-rows: 1fr 5fr;
+}
+
+#Taskbar {
+    layout: grid;
+    grid-size: 2;
+    grid-columns: 4fr 1fr;
+}
+
+.test {
+    height: 100%;
+    width: 1fr;
+    border: solid green;
+}
+
