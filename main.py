@@ -1,39 +1,46 @@
+from textual import on
+from textual.events import Mount
+from textual.reactive import reactive
 from textual.app import App, ComposeResult
 from textual.screen import Screen
 from textual.containers import Container, Horizontal, VerticalScroll, Vertical
-from textual.widgets import Static, Header, Footer, Placeholder, Tabs, Button
-from textual.widgets import Label, TabbedContent, TabPane, DataTable, Collapsible, Tabs
-from textual.widgets import OptionList, SelectionList
+from textual.widgets import Static, Header, Footer, DataTable, Collapsible, Input, Label, SelectionList, TabbedContent, TabPane
 from rich.text import Text
 
 import json
 import pandas
-from datetime import datetime
+import time
+import logging
+
+PASSWORD = "@rham2005"
+
+# Configure logging
+logging.basicConfig(filename='main.log', level=logging.DEBUG)
+
 
 # Load from JSON
 with open('airdrops_info.json', 'r') as f:
     airdrops_loaded = json.load(f)
     
-    
 # Load from CSV
 
 df = pandas.read_csv("walletDB.csv")
+ROWS = df.to_dict(orient="records")
 
 columns = len(df.columns)
 rows = len(df.index)
 
 # Chain Data
 
-selection_list = SelectionList[int](  
-    ("Solana", 0, True),
-    ("Ethereum", 1),
-    ("Ordinals", 2),
-    ("Nitrogen", 3),
-    ("Teiko", 4),
-    ("Berachain", 5),
+selection_list = SelectionList[str]( 
+    ("Solana", "Solana"),
+    ("Ethereum", "Ethereum"),
+    ("Ordinals", "Ordinals"),
+    ("Nitrogen", "Nitrogen"),
+    ("Teiko", "Teiko"),
+    ("Berachain", "Berachain"),
     classes="option"
 )
-
 
 # Load DataTable For Wallets 
 
@@ -75,7 +82,7 @@ class DashboardScreen(Screen):
             with Horizontal(id="main"):
                 
                 with VerticalScroll(id="tasks"):  
-                    yield Static("Tasks", id="taskslabel")
+                    yield Static("Tasks", id="taskstatic")
                     with Collapsible(title="Tasks"):
                         yield Static("test")
                         # for key,airdrop in airdrops_loaded['airdrops'].items():
@@ -102,8 +109,10 @@ class DashboardScreen(Screen):
                     
         yield Footer()
 
-
 class WalletsScreen(Screen):
+    
+    selected_chain = reactive("")
+    
     def compose(self) -> ComposeResult:
         with Vertical(id="WalletScreen"):
             with Horizontal(id="Taskbar"):
@@ -111,12 +120,45 @@ class WalletsScreen(Screen):
                 with VerticalScroll(id="Sorting"):
                     with Collapsible(title="Sort By Chain"):
                         yield selection_list
+
             yield _test_dt(self)
+
+    @on(SelectionList.SelectedChanged)
+    async def on_selected_chain_change(self, event: SelectionList.SelectedChanged) -> None:
+        selection_list = event.selection_list
+        selected_values = selection_list.selected  # Access the selected values directly
+        self.selected_chain = selected_values
+        datatable = self.query_one(DataTable)
+        datatable.clear()
+        await self.update_datatable()
+
+    async def update_datatable(self) -> None:
+        datatable = self.query_one(DataTable)
+        if datatable is None:
+            logging.error("DataTable not found.")
+            return
+
+        datatable.clear()
+        selected_chain = self.selected_chain or ""
+        filtered_rows = [row for row in ROWS if row["network"] in selected_chain]
         
-        
-        
-        
-        
+        if not filtered_rows:
+            logging.warning("No rows found for the selected chain.")
+            return
+
+        for n, row_data in enumerate(filtered_rows, start=1):
+            logging.debug(f"Adding row {n}: {row_data}")
+            datatable.add_row(
+                Text(str(n), style="italic black"),
+                Text(str(row_data['wallet_name']), style="italic #03AC13"),
+                Text(str(row_data['address']), style="italic #03AC13"),
+                Text(str(row_data['privatekey']), style="italic #03AC13"),
+                Text(str(row_data['network']), style="italic #03AC13"),
+            )
+
+        # Explicitly trigger a redraw of the screen
+        self.refresh()
+        logging.debug("DataTable updated successfully.")
         
 class PortfolioApp(App):
     BINDINGS = [

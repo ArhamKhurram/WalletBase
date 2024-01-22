@@ -45,8 +45,7 @@
     border: darkred;
 }
 
-#tasklabel {
-    border: darkred;
+#taskstatic {
+    background: $panel;
     text-align: center;
-
 }
