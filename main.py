@@ -1,4 +1,4 @@
-from textual import on
+from textual import on, events
 from textual.events import Mount
 from textual.reactive import reactive
 from textual.app import App, ComposeResult
@@ -11,8 +11,6 @@ import json
 import pandas
 import time
 import logging
-
-PASSWORD = "@rham2005"
 
 # Configure logging
 logging.basicConfig(filename='main.log', level=logging.DEBUG)
@@ -71,42 +69,63 @@ def _test_dt( self ) -> DataTable:
 
 class DashboardScreen(Screen):
     CSS_PATH = "dashboard.tcss"
-    
+
+    @on(TabbedContent.TabActivated)
+    def on_tab_activated(self, event: TabbedContent.TabActivated) -> None:
+        activated_pane = event.pane.id
+        logging.debug(f"Tab pane activated: {activated_pane}")
+
+        # Clear existing tasks
+        tasks_containers = self.query(VerticalScroll)
+
+        for tasks_container in tasks_containers:
+            if tasks_container.id == "tasks":
+                logging.debug(f"Found tasks container: {tasks_container}")
+                logging.debug(f"Tasks container children:{tasks_container.children}")
+                tasks_container.remove_children()
+                
+                logging.debug(f"Tasks container exists still?: {tasks_container}")
+                
+                tasks_container.mount(Static(f"{activated_pane} Tasks", id="taskstatic"))
+
+
+                # Add new tasks dynamically
+                for key, airdrop in airdrops_loaded['airdrops'].items():
+                    if activated_pane == airdrop['name']:
+                        logging.debug(f"Matching airdrop found: {airdrop}")
+                        for n, task in enumerate(airdrop['tasks']):
+                            collapsible = Collapsible(title=f"Task {n + 1}")
+                            collapsible.compose_add_child(Label(task))
+                            tasks_container.mount(collapsible)
+
+                # Explicitly trigger a redraw of the screen
+                self.refresh()
+                break
+
     def compose(self) -> ComposeResult:
-        
         yield Header("Dashboard")
         self.title = "Portfolio Application"
-        
+
         with Container(id="dashboard"):
-            
             with Horizontal(id="main"):
-                
                 with VerticalScroll(id="tasks"):  
                     yield Static("Tasks", id="taskstatic")
-                    with Collapsible(title="Tasks"):
-                        yield Static("test")
-                        # for key,airdrop in airdrops_loaded['airdrops'].items():
-                        #     pane = TabbedContent.get_tab()
-                        #     if pane == f"{airdrop}":
-                        #         yield Static(f"{airdrop['tasks']}")
-                        
+                    
+
                 with Container(id="status"):
                     with TabbedContent(id="tabbed"):
                         for key, airdrop in airdrops_loaded['airdrops'].items():
-                            with TabPane(f"{airdrop['name']}"):
-                               with Horizontal():
-                                   with Vertical(classes="left-tab"):
+                            with TabPane(f"{airdrop['name']}", id=f"{airdrop['name']}"):
+                                with Horizontal():
+                                    with Vertical(classes="left-tab"):
                                         yield Label(f"Name: {airdrop['name']}")
                                         yield Label(f"Address: {airdrop['address']}")
-                                   with Container(classes="right-tab"):
+                                    with Container(classes="right-tab"):
                                         yield Label(f"Status: {airdrop['status']}")
 
-                                    
-                                                    
             with VerticalScroll(id="wallets"):
                 yield _test_dt(self)
-                
-                    
+
         yield Footer()
 
 class WalletsScreen(Screen):

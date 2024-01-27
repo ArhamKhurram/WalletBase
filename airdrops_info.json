@@ -52,7 +52,7 @@
             ]
         },
         "4": {
-            "name": "Nitrogen",
+            "name": "Berachain",
             "address": "0x1234",
             "amount": 1000,
             "status": "Farming",
@@ -69,7 +69,7 @@
             ]
         },
         "5": {
-            "name": "Nitrogen",
+            "name": "Kroma",
             "address": "0x1234",
             "amount": 1000,
             "status": "Farming",
@@ -86,7 +86,7 @@
             ]
         },
         "6": {
-            "name": "Nitrogen",
+            "name": "Zeta",
             "address": "0x1234",
             "amount": 1000,
             "status": "Farming",
@@ -103,41 +103,7 @@
             ]
         },
         "7": {
-            "name": "Nitrogen",
-            "address": "0x1234",
-            "amount": 1000,
-            "status": "Farming",
-            "type": "ERC20",
-            "tasks": [
-                "tasks1",
-                "tasks2",
-                "tasks3"
-            ],
-            "taskStatus": [
-                1,
-                0,
-                1
-            ]
-        },
-        "8": {
-            "name": "Nitrogen",
-            "address": "0x1234",
-            "amount": 1000,
-            "status": "Farming",
-            "type": "ERC20",
-            "tasks": [
-                "tasks1",
-                "tasks2",
-                "tasks3"
-            ],
-            "taskStatus": [
-                1,
-                0,
-                1
-            ]
-        },
-        "9": {
-            "name": "Nitrogen",
+            "name": "Pyth",
             "address": "0x1234",
             "amount": 1000,
             "status": "Farming",
